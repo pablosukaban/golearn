@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/tour/pic"
 	"math"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -258,6 +258,112 @@ func Pic(dx, dy int) [][]uint8 {
 	return slice1
 }
 
+type Maptex struct {
+	Lat, Long float64
+}
+
+func firstMaps() {
+	var m map[string]Maptex
+
+	m = make(map[string]Maptex)
+
+	m["Bell Labs"] = Maptex{
+		40.68433, -74.39967,
+	}
+
+	fmt.Println(m)
+	fmt.Println(m["Bell Labs"])
+
+	mm := map[string]Maptex{
+		"Bell Labs": Maptex{
+			40.68433, -74.39967,
+		},
+		"Google": {
+			37.42202, -122.08408,
+		},
+	}
+
+	fmt.Println(mm)
+}
+
+func printMapValue(m map[string]int, val int) {
+	fmt.Printf("Map is: %v, value: %d \n", m, val)
+}
+
+func mapMutations() {
+	m := make(map[string]int)
+	m["Answer"] = 42
+	printMapValue(m, m["Answer"])
+
+	m["New answer"] = 54
+	printMapValue(m, m["New answer"])
+
+	delete(m, "Answer")
+
+	value, ok := m["Answer"]
+	newValue, newOk := m["New answer"]
+	fmt.Println("The value of answer:", value, "Present?", ok)
+	fmt.Println("The value of new answer:", newValue, "Present?", newOk)
+}
+
+func WordsCount(s string) map[string]int {
+	result := make(map[string]int)
+
+	var words []string = strings.Fields(s)
+
+	fmt.Println(result)
+
+	for _, word := range words {
+		_, ok := result[word]
+
+		if ok == false {
+			result[word] = 1
+		} else {
+			result[word] += 1
+		}
+	}
+
+	return result
+}
+
+func adder() func(int) int {
+	sum := 0
+
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+func closers() {
+	pos, neg := adder(), adder()
+
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			pos(i), neg(2*-i))
+	}
+}
+
+func Fibbonaci() func() int {
+	prev := 0
+	cur := 1
+	return func() int {
+
+		result := prev
+
+		prev, cur = cur, prev+cur
+
+		return result
+	}
+}
+
+func closers2() {
+	f := Fibbonaci()
+	for i := 0; i < 10; i++ {
+		fmt.Println(f())
+	}
+}
+
 func main() {
-	pic.Show(Pic)
+	closers2()
 }
