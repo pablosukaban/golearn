@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -508,6 +509,42 @@ func ReaderAscii() {
 	fmt.Println(n, err, string(p))
 }
 
+// rot13 reader
+
+type rot13Reader struct {
+	r io.Reader
+}
+
+func (rot rot13Reader) Read(p []byte) (int, error) {
+	n, err := rot.r.Read(p)
+
+	if err != nil {
+		return 0, err
+	}
+
+	for i := range p {
+		c := p[i]
+
+		if 'A' <= c && c <= 'Z' {
+			c = 'A' + (c-'A'+13)%26
+		}
+
+		if 'a' <= c && c <= 'z' {
+			c = 'a' + (c-'a'+13)%26
+		}
+
+		p[i] = c
+	}
+
+	return n, nil
+}
+
+func doRot13Reader() {
+	s := strings.NewReader("Lbh penpxrq gur pbqr!")
+	r := rot13Reader{s}
+	io.Copy(os.Stdout, &r)
+}
+
 func main() {
-	ReaderAscii()
+	doRot13Reader()
 }
