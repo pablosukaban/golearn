@@ -364,6 +364,58 @@ func closers2() {
 	}
 }
 
+type Floatex struct {
+	X, Y float64
+}
+
+func (v Floatex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func Methods1() {
+	v := Floatex{3, 4}
+	vSquared := v.Abs()
+	fmt.Println(vSquared)
+}
+
+type MyFloat float64
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}
+	return float64(f)
+}
+
+func Methods2() {
+	myF := MyFloat(-math.Sqrt2)
+	fmt.Println(myF.Abs())
+}
+
+///////////////////////
+
+type Methodex struct {
+	X, Y float64
+}
+
+func (v Methodex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func (m *Methodex) Scale(f float64) {
+	m.X = m.X * f
+	m.Y = m.Y * f
+}
+
+func Methods3() {
+	m := Methodex{3, 4}
+	fmt.Println(m)
+	m.Scale(10)
+	fmt.Println(m)
+	fmt.Println(m.Abs())
+	fmt.Println(m)
+}
+
 func main() {
-	closers2()
+	Methods3()
 }
