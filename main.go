@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"math"
 	"runtime"
 	"strings"
@@ -469,9 +470,28 @@ func mySqrtWithError(x float64) (float64, error) {
 	return z, nil
 }
 
-func main() {
-	fmt.Println(mySqrtWithError(2))
-	fmt.Println(mySqrtWithError(-2))
+// reader
 
-	fmt.Println(ErrNegativeSqrt(-2).Error())
+func DoNewReader() {
+	str := "Hello, Reader!"
+
+	r := strings.NewReader(str)
+
+	b := make([]byte, 8)
+
+	for {
+		n, err := r.Read(b)
+		fmt.Printf("n = %v, err = %v, b = %v \n", n, err, b)
+		fmt.Printf("b = %q\n", b)
+		fmt.Printf("b[:n] = %q\n", b[:n])
+		if err == io.EOF {
+			fmt.Println("break")
+			break
+		}
+	}
+
+}
+
+func main() {
+	DoNewReader()
 }
