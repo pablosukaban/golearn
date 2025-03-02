@@ -492,6 +492,22 @@ func DoNewReader() {
 
 }
 
+type MyReader struct{}
+
+func (mr MyReader) Read(p []byte) (int, error) {
+	for i := range p {
+		p[i] = 65
+	}
+
+	return len(p), nil
+}
+
+func ReaderAscii() {
+	p := make([]byte, 0)
+	n, err := MyReader{}.Read(p)
+	fmt.Println(n, err, string(p))
+}
+
 func main() {
-	DoNewReader()
+	ReaderAscii()
 }
