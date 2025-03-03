@@ -572,6 +572,26 @@ func doImageTask() {
 	pic.ShowImage(m)
 }
 
+// generics 1
+
+func Index[T comparable](s []T, x T) int {
+	for i, v := range s {
+		if v == x {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func FindIndexRun() {
+	si := []int{1, 2, 3, 4, 5}
+	fmt.Println("3 = ", Index(si, 3))
+
+	ss := []string{"hi", "yo"}
+	fmt.Println("ss = ", Index(ss, "yo"))
+}
+
 func main() {
-	doImageTask()
+	FindIndexRun()
 }
