@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/tour/pic"
+	"image"
+	"image/color"
 	"io"
 	"math"
 	"os"
@@ -545,6 +548,30 @@ func doRot13Reader() {
 	io.Copy(os.Stdout, &r)
 }
 
+type Image struct {
+	w int
+	h int
+}
+
+func (i Image) Bounds() image.Rectangle {
+	return image.Rect(0, 0, i.w, i.h)
+}
+
+func (i Image) ColorModel() color.Model {
+	return color.RGBAModel
+}
+
+func (i Image) At(x, y int) color.Color {
+	val := uint8((x + y) ^ 2)
+
+	return color.RGBA{R: val, G: val, B: 255, A: 255}
+}
+
+func doImageTask() {
+	m := Image{200, 200}
+	pic.ShowImage(m)
+}
+
 func main() {
-	doRot13Reader()
+	doImageTask()
 }
