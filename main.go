@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"golang.org/x/exp/constraints"
 	"golang.org/x/tour/pic"
 	"image"
 	"image/color"
@@ -599,6 +600,19 @@ type List[T any] struct {
 	val  T
 }
 
+// примеры
+
+func Swap[T any](a, b *T) {
+	*a, *b = *b, *a
+}
+
+func DoSwap() {
+	x, y := 1, 2
+	fmt.Println(x, y)
+	Swap(&x, &y)
+	fmt.Println(x, y)
+}
+
 func main() {
-	FindIndexRun()
+	DoSwap()
 }
