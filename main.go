@@ -592,6 +592,13 @@ func FindIndexRun() {
 	fmt.Println("ss = ", Index(ss, "yo"))
 }
 
+// generic types
+
+type List[T any] struct {
+	next *List[T]
+	val  T
+}
+
 func main() {
 	FindIndexRun()
 }
