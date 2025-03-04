@@ -611,7 +611,3 @@ func DoSwap() {
 	Swap(&x, &y)
 	fmt.Println(x, y)
 }
-
-func main() {
-	bombTimer()
-}
