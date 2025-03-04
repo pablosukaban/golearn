@@ -11,8 +11,6 @@ import (
 //	Right *Tree
 //}
 
-// Walk walks the tree t sending all values
-// from the tree to the channel ch.
 func Walk(t *tree.Tree, ch chan int) {
 
 	if t == nil {
@@ -20,26 +18,35 @@ func Walk(t *tree.Tree, ch chan int) {
 	}
 
 	Walk(t.Left, ch)
-	//fmt.Println("t val: ", t.Value)
 	ch <- t.Value
 	Walk(t.Right, ch)
 
 }
 
-// Same determines whether the trees
-// t1 and t2 contain the same values.
 func Same(t1, t2 *tree.Tree) bool {
-	return false
+	ch1 := make(chan int)
+	ch2 := make(chan int)
+
+	go Walk(t1, ch1)
+	go Walk(t2, ch2)
+
+	for i := 0; i < 10; i++ {
+		x1 := <-ch1
+		x2 := <-ch2
+
+		if x1 != x2 {
+			return false
+		}
+	}
+
+	return true
+
 }
 
 func main() {
-	t := tree.New(1)
-	c := make(chan int)
-	fmt.Println(t)
-
-	go Walk(t, c)
-
-	for i := 0; i < 10; i++ {
-		fmt.Println(<-c)
-	}
+	t1 := tree.New(1)
+	t2 := tree.New(1)
+	t3 := tree.New(2)
+	fmt.Println(Same(t1, t2))
+	fmt.Println(Same(t1, t3))
 }
