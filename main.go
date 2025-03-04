@@ -613,5 +613,5 @@ func DoSwap() {
 }
 
 func main() {
-	Chanel1()
+	RunChannelsFibs()
 }

@@ -19,7 +19,6 @@ func sum(s []int, c chan int) {
 	}
 
 	c <- res
-
 }
 
 func Chanel1() {
@@ -28,9 +27,26 @@ func Chanel1() {
 	c := make(chan int)
 
 	go sum(s[:3], c)
-	fmt.Println(c)
 	go sum(s[3:], c)
-	fmt.Println(c)
 	x, y := <-c, <-c
-	fmt.Println(x, y)
+	fmt.Println(x, y, x+y)
+}
+
+func ChannelsFibs(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c)
+}
+
+func RunChannelsFibs() {
+	c := make(chan int, 10)
+
+	go ChannelsFibs(cap(c), c)
+
+	for i := range c {
+		fmt.Println(i)
+	}
 }
