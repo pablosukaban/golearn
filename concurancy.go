@@ -77,3 +77,21 @@ func runFibsWithSelect() {
 
 	fibsWithSelect(c, quit)
 }
+
+func bombTimer() {
+	tick := time.Tick(200 * time.Millisecond)
+	boom := time.After(2000 * time.Millisecond)
+
+	for {
+		select {
+		case <-tick:
+			fmt.Println("tick.")
+		case <-boom:
+			fmt.Println("BOOOOM")
+			return
+		default:
+			fmt.Println("...................")
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+}
