@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/exp/constraints"
 	"golang.org/x/tour/pic"
 	"image"
 	"image/color"
@@ -614,5 +613,5 @@ func DoSwap() {
 }
 
 func main() {
-	DoSwap()
+	Chanel1()
 }
