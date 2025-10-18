@@ -113,5 +113,7 @@ func Exercise35(param string) {
 		wordsCount[trimmed]++
 	}
 
-	fmt.Println(wordsCount)
+	for word, count := range wordsCount {
+		fmt.Printf("%s - %d \n", word, count)
+	}
 }
