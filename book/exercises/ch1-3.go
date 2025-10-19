@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -123,6 +124,7 @@ func isDatesEqual(first, second time.Time) bool {
 	return first.Year() == second.Year() && first.Month() == second.Month() && first.Day() == second.Day()
 }
 
+/*  */
 func Exercise36() {
 	const (
 		colorRed   = "\033[0;31m"
@@ -187,4 +189,60 @@ func Exercise36() {
 	}
 
 	fmt.Println()
+}
+
+func getMapKeys(givenMap map[string]float64) []string {
+	keys := make([]string, 0, len(givenMap))
+
+	for k := range givenMap {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+
+	return keys
+}
+
+/* конвертирует сумму из одной валюты в другую по заранее заданным курсам. */
+func Exercise37() {
+	args := os.Args[1:]
+
+	rates := map[string]float64{
+		"usd": 1.00,
+		"eur": 0.9345,
+		"rub": 96.2,
+		"gbp": 0.81,
+	}
+
+	if args[0] == "--list" {
+		fmt.Println("доступные валюты:", getMapKeys(rates))
+		return
+	}
+
+	if len(args) < 3 {
+		fmt.Println("использование: go run file.go <сумма> <из> <в>")
+		return
+	}
+
+	amount, err := strconv.ParseFloat(args[0], 64)
+	if err != nil {
+		fmt.Printf("ошибка с числом '%s': %v\n", args[0], err)
+		return
+	}
+
+	from := strings.ToLower(args[1])
+	to := strings.ToLower(args[2])
+
+	fromRate, okFrom := rates[from]
+	toRate, okTo := rates[to]
+
+	if !okFrom || !okTo {
+		fmt.Println("неизвестная валюта, доступно только:", getMapKeys(rates))
+
+		return
+	}
+
+	result := amount / fromRate * toRate
+
+	fmt.Printf("%.2f %s = %.2f %s \n", amount, strings.ToUpper(from), result, strings.ToUpper(to))
 }
