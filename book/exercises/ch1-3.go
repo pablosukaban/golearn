@@ -175,7 +175,7 @@ func Exercise36() {
 		case isToday:
 			color = colorRed
 		case weekDay == 0, weekDay == 6:
-			color = colorNone
+			color = colorGray
 		}
 
 		if weekDay == 6 {
