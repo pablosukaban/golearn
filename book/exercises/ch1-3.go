@@ -124,9 +124,12 @@ func isDatesEqual(first, second time.Time) bool {
 }
 
 func Exercise36() {
-	const colorRed = "\033[0;31m"
-	const colorNone = "\033[0m"
-	const colorWhite = "\033[97m"
+	const (
+		colorRed   = "\033[0;31m"
+		colorNone  = "\033[0m"
+		colorWhite = "\033[97m"
+		colorGray  = "\033[37m"
+	)
 
 	args := os.Args[1:]
 
@@ -150,9 +153,7 @@ func Exercise36() {
 	}
 
 	date := time.Date(yearNumber, time.Month(monthNumber), 1, 0, 0, 0, 0, time.Local)
-	nextMonthDate := date.AddDate(0, 1, 0)
-	lastDay := nextMonthDate.AddDate(0, 0, -1)
-	daysInMonth := lastDay.Day()
+	daysInMonth := date.AddDate(0, 1, -1).Day()
 
 	currentDate := time.Now()
 
@@ -163,29 +164,25 @@ func Exercise36() {
 		fmt.Printf("%2s ", "")
 	}
 
-	for i := 1; i < daysInMonth; i++ {
-		d := strconv.Itoa(i)
+	for i := 1; i <= daysInMonth; i++ {
 		isToday := isDatesEqual(date, currentDate)
+		weekDay := int(date.Weekday())
 
-		stringFormat := colorWhite + "%2s " + colorNone
+		color := colorWhite
+		suffix := " "
 
-		if int(date.Weekday()) == 0 {
-			if isToday {
-				stringFormat = colorRed + "%2s " + colorNone
-			} else {
-				stringFormat = colorNone + "%2s " + colorNone
-			}
-		} else if int(date.Weekday()) == 6 {
-			if isToday {
-				stringFormat = colorRed + "%2s\n" + colorNone
-			} else {
-				stringFormat = colorNone + "%2s\n" + colorNone
-			}
-
+		switch {
+		case isToday:
+			color = colorRed
+		case weekDay == 0, weekDay == 6:
+			color = colorNone
 		}
 
-		fmt.Printf(stringFormat, d)
+		if weekDay == 6 {
+			suffix = "\n"
+		}
 
+		fmt.Printf(color+"%2d"+suffix+colorNone, i)
 		date = date.AddDate(0, 0, 1)
 	}
 
